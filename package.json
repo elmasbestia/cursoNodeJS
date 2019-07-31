@@ -1,0 +1,35 @@
+{
+  "name": "cursonodejs",
+  "version": "1.0.0",
+  "description": "Curso acelerado de Node JS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "body-parser": "^1.0.1",
+    "chalk": "",
+    "cors": "^2.8.5",
+    "dotenv": "^8.0.0",
+    "errorhandler": "^1.5.1",
+    "express": "^4.0.0",
+    "figlet": "",
+    "fs": "0.0.1-security",
+    "inquirer": "",
+    "js-xlsx": "^0.8.22",
+    "mongodb": "^3.2.7",
+    "mongoose": "^3.6.13",
+    "morgan": "^1.9.1",
+    "shelljs": "^0.8.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "cursoNodeJS"
+  },
+  "keywords": [
+    "node",
+    "programming"
+  ],
+  "author": "Rafa Gomez https://rafagomez.neocities.org",
+  "license": "MIT"
+}

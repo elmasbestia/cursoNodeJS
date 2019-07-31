@@ -1,0 +1,12 @@
+1. Instalar node js (npm viene en el paquete)
+https://nodejs.org/es/
+
+Para cada proyecto:
+1. npm init	// Crea el archivo package.json con la configuración propia del proyecto
+
+		// Para crear un proyecto de cero
+2. npm install modulo -save	// 1. Instala el módulo modulo en el directorio node_modules
+				// 2. registra modulo en el archivo package,json 
+
+		// Para instalar un proyecto existente
+2. npm install	// Instala todos los módulos registrados en package.json
