@@ -16,3 +16,6 @@ Archivos propios del ambiente de Node JS:
 package.json		Registro de los datos técnicos concernientes al ambiente de ejecución
 node_modules		Librerías usadas por los aplicativos en Node JS
 
+Julio de 2.019
+Rafa Gómez
+https://rafagomez.neocities.org

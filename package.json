@@ -30,6 +30,6 @@
     "node",
     "programming"
   ],
-  "author": "Rafa Gomez https://rafagomez.neocities.org",
+  "author": {"name": "Rafa Gomez", "email": "elmasbestia@hotmail.com", "url": "https://rafagomez.neocities.org"},
   "license": "MIT"
 }
