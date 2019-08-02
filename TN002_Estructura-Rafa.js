@@ -55,7 +55,6 @@ const cors          = require("cors");
 // DOTENV lee el archivo .env y permite acceder los parámetros en él inscritos a través del objeto process.env
 require('dotenv').config();
 
-
 // F U N C I O N E S
 const identifica = () => {
 	let cont = 0;
@@ -76,12 +75,14 @@ function triple(numero) {
 }
 
 // M I D D L E W A R E
+
+/* Define la raíz de los archivos a ser referenciados */
+app.use(express.static('./'));
+
 app.use(logger('dev'));
 app.use(errorhandler());
 app.use(bodyParser.json());
 app.use(cors());
-
-//app.use(express.static('./'));
 
 app.param("numero", (req, res, next) => {
     let _numero = req.params.numero;
@@ -101,7 +102,7 @@ app.param("numero", (req, res, next) => {
 // R U T A S
 
 app.get('/', (req, res) => {
-   res.send("¡Hola, Mundo!");
+   res.sendFile(path.join(__dirname,'principal.html'));
 });
 
 app.get("/doble/:numero", (req,res) => {

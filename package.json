@@ -18,7 +18,7 @@
     "inquirer": "",
     "js-xlsx": "^0.8.22",
     "mongodb": "^3.2.7",
-    "mongoose": "^3.6.13",
+    "mongoose": "^3.9.7",
     "morgan": "^1.9.1",
     "shelljs": "^0.8.3"
   },
@@ -30,6 +30,10 @@
     "node",
     "programming"
   ],
-  "author": {"name": "Rafa Gomez", "email": "elmasbestia@hotmail.com", "url": "https://rafagomez.neocities.org"},
+  "author": {
+    "name": "Rafa Gomez",
+    "email": "elmasbestia@hotmail.com",
+    "url": "https://rafagomez.neocities.org"
+  },
   "license": "MIT"
 }
