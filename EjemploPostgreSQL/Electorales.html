@@ -1,0 +1,425 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<script defer src="https://use.fontawesome.com/releases/v5.0.1/js/all.js"></script>
+
+    <style>
+		body {
+			--rogFondo: #009999;
+		}
+		.badge {
+			background-color: var(--rogFondo);
+			color: white;
+			border: 1px solid red;
+			border-radius: 12px;
+			padding: 5px;
+			margin: 10px;
+		}
+        button {
+            background-color: var(--rogFondo);
+            border: none;
+            color: white;
+            padding: 10px 20px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 12px;
+            margin: 3px 2px;
+            cursor: pointer;
+        }
+        button:hover {
+		  font-weight: bold;
+        }
+		label {
+            font-style: oblique;
+            font-weight: bold;
+            width: 100px;
+        }
+        .error {color: #FF0000;}
+        .rogBtn {
+            background-color: #00https://github.com/elmasbestia/bnsvr47b3;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 12px;
+            margin: 3px 2px;
+            cursor: pointer;
+        }
+        .rogBtn:hover {
+            font-weight: bold;
+        }
+	/* Búsqueda */
+		#vntBsq {
+			margin: 10px;
+			overflow: auto;
+		}
+		#cntBsq{
+			float: right;
+			background: var(--rogFondo);
+			color: white;
+			vertical-align: middle;
+
+			overflow: hidden;
+			white-space: nowrap;
+		}
+		#Bsq {
+			background: inherit;
+			color: inherit;
+			padding: 10px;
+			width: 300px;
+			display: none;
+			
+			-webkit-transition: all .55s ease;
+			-moz-transition: all .55s ease;
+			-ms-transition: all .55s ease;
+			-o-transition: all .55s ease;
+			transition: all .55s ease;
+		}
+		#btnBsq{
+			-webkit-border-top-right-radius: 5px;
+			-webkit-border-bottom-right-radius: 5px;
+			-moz-border-radius-topright: 5px;
+			-moz-border-radius-bottomright: 5px;
+			border-top-right-radius: 5px;
+			border-bottom-right-radius: 5px;
+
+			border: 1px solid black;
+			height: 50px;
+			width: 50px;
+			color: #FFFFFF;
+			font-size: 16pt;
+		}
+		#btnBsq:hover #Bsq{
+			display: inline;
+		}
+    /* D O M */
+       #lstResultados {
+		   max-height: 500px;
+	       overflow: auto;
+	   }
+    /* F i c h a */
+       #fichaBien {
+		   	border: 1px solid blue;
+			border-radius: 12px;
+			padding: 20px;
+	   }
+	   textarea {
+		   width:  500px;
+		   height: 50px;
+	   }
+    /* T a b l a s */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even){background-color: #f2f2f2}
+
+        th {
+            background-color: var(--rogFondo);
+            color: white;
+        }
+	/* M O D A L */
+	.rogModal {
+			display: none; /* Hidden by default */
+			position: fixed; /* Stay in place */
+			z-index: 1; /* Sit on top */
+			left: 0;
+			top: 0;
+			width: 100%; /* Full width */
+			height: 100% /* Full Height */
+			overflow: auto; /* Enable scroll if needed */
+			background-color: rgb(0,0,0); /* Fallback color */
+			background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+		}
+	.cntModal {
+		background-color: #fefefe;
+		margin: 5% auto; /* 5% from the top and centered */
+		padding: 20px;
+		border: 1px solid #888;
+		width: 90%;
+	}
+	.rogCierraModal {
+		color: #aaa;
+		float: right;
+		font-size: 28px;
+		font-weight: bold;
+	}
+	.rogCierraModal:hover, .rogCierraModal:focus {
+		color: black;
+		text-decoration: none;
+		cursor: pointer;
+	}
+    </style>
+    
+    <title>Datos Electorales</title>
+
+    <script src="./lib/rogLib.js"></script>
+    <script src="./lib/rogDPT.js"></script>
+    <script>
+		const svrURL = "http://localhost:5000/";
+		var btnBsq, opcBsq, valBsq;
+        var btnProcede, btnEspera;
+		var ficha;
+		var dpt;
+		Estructura = {
+		    DPT: {
+                Id: 0,
+                Edo: 0,
+                Mun: 0,
+                Pq: 0,
+                ESTADO: "",
+                MUNICIPIO: "",
+                PARROQUIA: ""
+		    },
+		    Centros: {
+                Viejo: "",
+                Centro: "",
+                CONDICION: "",
+                Edo: 0,
+                Mun: 0,
+                Pq: 0,
+                NOMBRE: "",
+                DIRECCION: "",
+		    },
+		    Registro: {
+                Nacionalidad: "V",
+                Cedula: "",
+                Apellido: "",
+                Apellido2: "",
+                Nombre: "",
+                Nombre2: "",
+                FNacimiento: "",
+                Edo: "",
+                Mun: "",
+                Pq: "",
+                Centro: ""
+		    }
+		}
+
+        function rogPrm(prm) { return (typeof prm == "object") ? prm.target.textContent : prm }
+
+		function objDom(dom) { return typeof dom === "string" ? document.getElementById(dom) : dom }
+
+        function btnDefault(dom,boton) {
+            let btn = objDom(boton);
+            let obj = objDom(dom);
+			obj.oninput = (e) => { btn.disabled = !Boolean(e.target.value) }
+            obj.onkeypress = (e) => { if(e.keyCode === 13) btn.click() }
+        }
+
+		function txtEspera() { return "<span class= 'fa-li fa fa-spinner fa-spin'></span>" }
+		
+		function txtBsq() {	return "<span class= 'fa fa-search'></span>" }
+
+		function leeBsq(que, valor) {
+			if (que) opcBsq.value = que
+			else que = opcBsq.value;
+			if (valor) valBsq.value = valor
+			else valor = valBsq.value;
+			
+			switch (que) {
+				case "Centro":
+					leeCentro(valor);
+					break;
+				case "Cedula":
+					leeVotante(valor);
+					break;
+				case "dpt":
+				    leeDPT(valor);
+				case "cantXEdo":
+					accede("GET", svrURL +"oficinas",(Ofcs) => { mstTabla(Ofcs,"lstResultados","Todas las Oficinas", null, leeOfc, "valor") });
+					break;
+				case "centrosXEdo":
+					accede("GET", svrURL +"cuentas",(Ctas) => { mstTabla(Ctas,"lstResultados","Todas las Cuentas", null, leeCta, "valor") });
+					break;
+				case "Centros":
+					leeCentros();
+					break;
+				default:
+					accede("GET",svrURL+"Registro?"+que+"="+valor,mstResultadoses);
+			}
+		}
+
+		function leeCentro(valor) { accede("GET", svrURL+"centro/" + rogPrm(valor), mstCentro) }
+
+		function leeBien (valor) { accede("GET", svrURL+"bien/" + rogPrm(valor), mstResultados) }
+
+		function mstResultados(datos,unosolo) {
+		    if (centro instanceof Array) {
+    			if (datos.length === 1) {
+	    		    if(unosolo) {
+		    	        unosolo(datos[0]);
+			        } else {
+			            mstResultadoses(datos)
+			        }
+			    } else mstResultadoses(datos);
+		    } else {
+		        unosolo(datos);
+		    }
+		}
+		
+		function mstCentro(centro) {
+		    let fuente = (centro instanceof Array) ? centro[0] : centro.Centro;
+			moveCorresponding("fichaCentro",
+			    fuente,
+			    Estructura.Centros);
+			dpt.codigo(fuente)
+			vntCentro.style.display = "block";
+		}
+		
+		function mstResultadoses(datos) {
+			const que = opcBsq.value
+			const valor = valBsq.value
+			const campos = ["BN_OFIC", "BN_IDEN", "Descripcion", "Marca", "Modelo", "Serial", "Color"];
+			mstTabla(bienes,"lstResultados", que +" = "+valor,campos,"leeBien","BN_IDEN");
+		}
+
+        function cambiaDPT() {
+			accede("GET", svrURL +"dpt", datos => {
+			    console.log("Volví de leer todos los DPT (", datos.length, ")");
+			    dpt.fuente(datos)
+                dpt.setCombos ( [{dom: "cmbEdo"}, {dom: "cmbMun"}, {dom: "cmbPq"}]);
+			})
+		}
+
+        const leeOfc = (idOfc) => {
+		    accede("GET", svrURL+"oficina/" + rogPrm(idOfc), mstOfc);
+		}
+		
+		function mstOfc(Bienes) {
+			const campos = ["BN_IDEN", "Descripcion", "Marca", "Modelo", "Serial", "Color"];
+			mstTabla(Bienes,"lstResultados","Oficina No. " +valBsq.value,campos,leeBien,"BN_IDEN");
+		}
+
+		function Debut() {
+			// Prepara los combos
+			
+			// Prepara forma de búsqueda
+			btnBsq = objDom("btnBsq");
+			opcBsq = objDom("opcBsq");
+			valBsq = objDom("valBsq");
+
+			opcBsq.oninput = () => { if(opcBsq[opcBsq.selectedIndex].classList.contains("sinValBsq")) leeBsq() }
+			btnBsq.onmouseover = () => { objDom("Bsq").style.display = "inline"; }
+			btnDefault(valBsq,btnBsq);
+
+			// Formulario
+			rogAsigna(".rogCierraModal","click",cierraFicha);
+			
+			//
+		    dpt = new rogDPT();
+		    cambiaDPT();
+		}
+    </script>
+</head>
+
+<body onload="Debut()">
+	<h1>Datos Electorales</h1>
+
+	<div>
+		<div id="vntBsq">
+		  <div id="cntBsq">
+			<div id="Bsq">
+				<select name="opcBsq" id="opcBsq">
+					<option value="Centro">Centro</option>
+					<option value="Cedula">Cédula</option>
+					<option value="dpt">Estado</option>
+					<option value="dpt">Municipio</option>
+					<option value="dpt">Parroquia</option>
+					<option value="cantXEdo" class="sinValBsq">Cant Votantes por Edo</option>
+					<option value="centrosXEdo" class="sinValBsq">Cant Centros por Edo</option>
+					<option value="Centros" class="sinValBsq">Todos los Centros</option>
+				</select>
+				<input type="text" id="valBsq"/>
+			</div>
+			<button id="btnBsq" onclick="leeBsq()"><i class="fa fa-search"></i></button>
+		  </div>
+		</div>
+	</div>
+	<div id="lstResultados">
+	</div>
+	<hr/>
+	<div id="vntCentro" class="rogModal">
+		<div class="cntModal">
+			<span class="rogCierraModal">&times;</span>
+			<form id="fichaCentro" method="POST" action="/centro">
+			    <label for="Viejo">Viejo</label>
+                <input type="text" name="Viejo"/>
+			    <label for="Centro">Centro</label>
+                <input type="text" name="Centro"/>
+			    <label for="Condicioon">Condición</label>
+                <input type="text" name="CONDICION"/>
+				<fieldset>
+                    <label for="Edo">D.P.T.</label>
+                    <input type="number" name="Edo"/>
+                    <input type="number" name="Mun"/>
+                    <input type="number" name="Pq"/><br/>
+
+                    <label for="cmbEdo">Estados</label>
+                    <label for="cmbMun">Municipios</label>
+                    <label for="cmbPq">Parroquias</label><br/>
+                    <select id="cmbEdo" class="rogCmbEdo"></select>
+                    <select id="cmbMun" class="rogCmbMun"></select>
+                    <select id="cmbPq" class="rogCmbPq"></select><br/>
+                </fieldset>
+                <label for="NOMBRE">Nombre</label>
+                <input type="text" name="NOMBRE" SIZE="120"/><br/>
+                <label for="DIRECCION">Dirección</label>
+				<textarea name="DIRECCION" required></textarea>
+				<fieldset>
+				    <input type="submit" value="Graba"/>
+				</fieldset>
+		    </form>
+	    </div>
+	</div>
+	<div id="vntVotante" class="rogModal">
+		<div class="cntModal">
+			<span class="rogCierraModal">&times;</span>
+			<form id="fichaVotante" method="POST" action="/votante">
+                <label for="Nacionalidad">Cédula:</label>
+                <input type="text" name="Nacionalidad" readonly/>
+                <input type="number" name="Cedula"/><br/>
+                <label for="Apellido">Apellidos</label>
+                <input type="text" name="Apellido"/>
+                <input type="text" name="Apellido2"/><br/>
+                <label for="Nombre">Nombres</label>
+                <input type="text" name="Nombre"/>
+                <input type="text" name="Nombre2"/><br/>
+                <label for="FNacimiento">F.Nacimiento</label>
+                <input type="text" name="FNacimiento"/><br/>
+				<fieldset>
+                    <label for="Edo">D.P.T.</label>
+                    <input type="number" name="Edo"/>
+                    <input type="number" name="Mun"/>
+                    <input type="number" name="Pq"/><br/><br/>
+
+                    <label for="cmbEdo">Estados</label>
+                    <label for="cmbMun">Municipios</label>
+                    <label for="cmbPq">Parroquias</label><br/>
+                    <select id="cmbEdo" class="rogCmbEdo"></select>
+                    <select id="cmbMun" class="rogCmbMun"></select>
+                    <select id="cmbPq" class="rogCmbPq"></select><br/>
+                </fieldset>
+                <label for="Centro">Centro</label>
+                <input type="number" name="Centro"/>
+                <fieldset>
+        			<input type="submit" value="Graba"/>
+			        <button onclick="cierraFicha()">Cancela</button>
+                </fieldset>
+            </form>
+        </div>
+	</div>
+
+    <footer>Elaborado por <a href="https://rafagomez.neocities.org">Rafa Gómez</a></footer>
+</body>
+</html>

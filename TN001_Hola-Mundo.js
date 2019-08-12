@@ -6,7 +6,9 @@
 const app = require("express")();
 
 // F U N C I O N E S
-
+function fnOotro(req, res) {
+res.send("Vino pa otro lado")
+}
 // M I D D L E W A R E
 
 // R U T A S
@@ -14,6 +16,8 @@ const app = require("express")();
 app.get('/', (req, res) => {
    res.send("¡Hola, Mundo!");
 });
+
+app.get("/Otro", fnOtro)
 
 // C O N E X I Ó N
 

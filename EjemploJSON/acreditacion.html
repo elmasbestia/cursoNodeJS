@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="author" content="Rafa Gómez https://rafagomez.neocities.org" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="Lib/rogLib.js"></script>
+    <script src="Lib/rogBsq.js"></script>
+    <script src="Lib/1M.js"></script>
+    <script src="Lib/Acreditacion.js"></script>
+
+    <link rel="stylesheet" href="/css/rogMenu.css"/>
+    <link rel="stylesheet" href="/css/rog.css"/>
+    <link rel="stylesheet" href="/css/1M.css"/>
+    <link rel="stylesheet" href="/css/Acreditacion.css"/>
+    <style>
+    </style>
+
+    <title>1M - Acreditación</title>
+    <link rel="shortcut icon" href="Imagenes/favicon.ico" type="image/x-icon" />
+
+    <script>
+        const BD = {
+            participantes: [],
+            clases: [],
+            categorias: [],
+            entes: []
+        }
+
+        let vntLlegada;
+        let vntPosibles;
+        let vntIdentifica;
+        let forma;
+        let btnLlego;
+        let bsq;
+
+        function debut() {
+            // Búsqueda
+            bsq = new rogBsq("bsq",
+                ["Nombre","Cédula"],
+                leeBsq
+            );
+
+            cargaTablas(BD);
+            vntLlegada = objDom("llegadaGen");
+            forma = {
+              cedula: objDom("Cedula"),
+              nombre: objDom("Nombre"),
+              obs:    objDom("obs"),
+              Id:     objDom("Id")
+            };
+            //                  DOM
+            btnLlego       = objDom("btnLlego");
+            vntPosibles    = objDom("lstPosibles");
+            vntIdentifica  = objDom("identifica");
+
+            // Programa elementos
+            rogAsigna(btnLlego,"onclick",llego);
+
+            btnDefault(forma.cedula,btnLlego);
+            btnDefault(forma.cedula,btnLlego);
+            rogAsigna(forma.cedula,"oninput",escribe);
+            rogAsigna(forma.nombre,"oninput",escribe);
+
+            // Muestra los Datos
+            actualiza();
+       }
+    </script>
+</head>
+
+<body onload="debut()">
+   <header id="encabezado">
+        <h1 id="hPpal">Acto del 1ero. de Mayo</h1>
+        <h2 id="hActual">Acreditación</h2>
+        <div id="bsq"></div>
+        <nav>
+            <button class="rogBtn" title="Actualiza la Llegada" onclick="actualiza()">Actualizar</button>
+            <button class="rogBtn" title="Imprimir" onclick="window.print()">&#x1F5B6;</button>
+            <button class="rogBtn" title="Limpia la planilla" onclick="limpiaFrm()">&#x267B</button>
+        </nav>
+    </header>
+    <div class="fles">
+    <div id="llegada">
+      <label for="cedula">Cédula</label><br/>
+      <input type="text" name="cedula" id="Cedula"><br/>
+      <label for="nombre">Nombre</label><br/>
+      <input type="text" name="nombre" id="Nombre"><br/>
+      <label for="obs">Observación</label><br/>
+      <input type="text" name="obs" id="obs">
+      <button class="rogBtn" id="btnLlego" disabled>Llegó</button>
+      <button class="rogBtn"  title="Limpia la planilla" onclick="limpiaFrm()">&#x267B</button>
+      <hr/>
+        <label for="Id">Id</label>
+      <input type="text" name="Id" id="Id">
+      <div id="identifica">
+      </div>
+    </div>
+    <div id="lstPosibles"></div>
+    </div>
+    <div id="llegadaGen"></div>
+    <footer>Elaborado por <a href="https://rafagomez.neocities.org">Rafa Gómez</a></footer>
+</body>
+</html>
