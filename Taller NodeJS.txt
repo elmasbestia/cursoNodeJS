@@ -1,0 +1,56 @@
+FILOSOFÍA
+1. BD
+2. Servicio
+3. Apps
+COMPONENTES
+1. Node
+2. NPM
+3. Express
+EXPRESS
+0. Declaraciones
+1. Librería (DRY)
+2. Midleware
+3. Rutas
+4. Conexión
+BDs
+1. pg
+2. Mongo
+3. graphQL
+4. IndexDB
+5. Json
+INSTALACIÓN
+1. npm
+2. package.json
+3. librería básica:
+	a. express
+	b. logger
+	c. errorhandler
+	d. bodyParser
+	e. cors
+	f. path
+	g. fs
+OTROS
+1. Git
+2. Firebase
+PRUEBAS
+1. test
+2. Postman
+3. curl
+
+OPCIONALES
+1. Programación funcional en JS
+	a. Map
+	b. forEach
+	c. for in / keys
+	d. for of
+	e. filter
+	f. search
+	g. reduce
+	h. generadores
+2. Promesas
+3. CSS
+	a. Clases
+	b. HTML Dinámico
+	c. Flex
+	d. Grid
+4. Sets e Iterables

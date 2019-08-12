@@ -7,6 +7,8 @@ Todos los archivos contenidos en este directorio están sujetos a modificación 
 El contenido actual es:
 README.txt			Este archivo
 
+Taller NodeJS.txt		Soporte para el dictado del Taller
+
 Instalación			Notas acerca de la instalación de Node JS
 
 TN001_Hola-Mundo.js		Ejemplo del programa básico en Node JS
