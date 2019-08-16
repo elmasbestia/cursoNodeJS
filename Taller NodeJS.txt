@@ -29,6 +29,7 @@ INSTALACIÓN
 	e. cors
 	f. path
 	g. fs
+	h. dotenv
 OTROS
 1. Git
 2. Firebase
